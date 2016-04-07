@@ -15,7 +15,7 @@
 # Install with this command (from your Pi):
 #
 # curl -L install.pi-hole.net | bash
-
+source ./functions
 
 ######## VARIABLES #########
 
@@ -27,6 +27,7 @@ webInterfaceDir="/var/www/html/admin"
 piholeGitUrl="https://github.com/pi-hole/pi-hole.git"
 piholeFilesDir="/etc/.pihole"
 
+DETECTDISTRO
 
 # Find the rows and columns
 rows=$(tput lines)

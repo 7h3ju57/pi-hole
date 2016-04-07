@@ -1,0 +1,26 @@
+#Detects linux distrobution.
+DETECTDISTRO() {
+DISTROID=$(cat /etc/*-release | grep -v LIKE | grep -v VERSION | grep ID | cut -d= -f2)
+case "$DISTROID" in
+'"centos"')
+echo "Looks like Centos"
+
+;;
+"debian")
+echo "Looks like Debian"
+
+;;
+"arch")
+# Arch Linux
+echo "Looks like Arch!"
+piholeGitUrl="https://github.com/7h3ju57/pi-hole.git -b Universal"
+webInterfaceGitUrl="https://github.com/7h3ju57/AdminLTE.git -b Universal"
+PKGQUERY="pacman -Qq"
+PKGINSTALL="pacman -S"
+DEPENDS="dnsmasq lighttpd php-cgi bc figlet"
+piholeFilesDir=/etc/.pihole
+PIINSTALLDIR=/etc/pihole #piinstalldir#
+PILOG=/var/log/pihole #pilog#
+webInterfaceDir=/srv/http/pihole/admin #WebRoot#
+esac
+}
