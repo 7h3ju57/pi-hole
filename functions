@@ -1,0 +1,50 @@
+#Detects linux distrobution.
+DETECTDISTRO() {
+DISTROID=$(cat /etc/*-release | grep -v LIKE | grep -v VERSION | grep ID | cut -d= -f2)
+case "$DISTROID" in
+'"centos"')
+echo "Looks like Centos"
+
+;;
+"debian")
+echo "Looks like Debian"
+webInterfaceGitUrl="https://github.com/pi-hole/AdminLTE.git"
+webInterfaceDir="/var/www/html/admin"
+piholeGitUrl="https://github.com/pi-hole/pi-hole.git"
+piholeFilesDir="/etc/.pihole"
+PKGQUERY="dpkg-query -s"
+PKGINSTALL="pacman -S"
+dependencies=( dnsutils bc toilet figlet dnsmasq lighttpd php5-common php5-cgi php5 git curl unzip wget )
+WEBROOT=/var/www/html
+;;
+"arch")
+# Arch Linux
+echo "Looks like Arch!"
+piholeGitUrl="https://github.com/7h3ju57/pi-hole.git -b Universal"
+webInterfaceGitUrl="https://github.com/7h3ju57/AdminLTE.git -b Universal"
+PKGQUERY="pacman -Qq"
+PKGINSTALL="pacman -S"
+piholeFilesDir=/etc/.pihole
+PIINSTALLDIR=/etc/pihole #piinstalldir#
+PILOG=/var/log/pihole.log #pilog#
+webInterfaceDir=/srv/http/pihole/admin #WebRoot#
+WEBROOT=/srv/http
+SCRIPTSLOCATION=/opt/pihole
+dependencies=( bind-tools bc toilet figlet dnsmasq lighttpd php-cgi php5 git curl unzip wget )
+esac
+}
+
+spinner()
+{
+	local pid=$1
+    local delay=0.50
+    local spinstr='/-\|'
+    while [ "$(ps a | awk '{print $1}' | grep "$pid")" ]; do
+		local temp=${spinstr#?}
+        printf " [%c]  " "$spinstr"
+        local spinstr=$temp${spinstr%"$temp"}
+        sleep $delay
+        printf "\b\b\b\b\b\b"
+    done
+    printf "    \b\b\b\b"
+}
